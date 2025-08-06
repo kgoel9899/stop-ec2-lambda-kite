@@ -2,6 +2,7 @@ package org.example;
 
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 
@@ -15,8 +16,7 @@ public class StopEC2Instance implements RequestHandler<Object, String> {
 
     @Override
     public String handleRequest(Object input, Context context) {
-        try (Ec2Client ec2 = Ec2Client.create()) {
-
+        try (Ec2Client ec2 = Ec2Client.builder().region(Region.AP_SOUTH_1).build()) {
             // Step 1: Filter instances by tag
             Filter tagFilter = Filter.builder()
                     .name("tag:" + TAG_KEY)
